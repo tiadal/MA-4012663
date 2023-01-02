@@ -1,0 +1,36 @@
+{% extends "app/header.html" %}
+{% load static %}
+{% block content %}
+             <div class="message pad">
+            {% if messages %}
+                {% for message in messages %}
+                {{ message.tags }}
+                {% endfor %}
+            {% endif %}
+            </div>
+            <section class="pad hero">
+                <div class="boxLeftHome">
+                    <h1>BraInf Imprint</h1>
+                    <h2>This is a personal project with no connection to any real entity and no data are collected in any way.</h2>
+                    <div>
+                        <a class="button" href="{% url 'app:homepage' %}">Home</a>
+                    </div>
+                </div>
+                <div class="boxRight2 pad">
+                </div>
+            </section>
+            <section class="gridWrapper home pad6">
+                <div class="itemHome">
+                    <img class="itemHomeImg" src="{% static 'app/management.svg' %}"/>
+                    <h2>Campaign Management</h2>
+                </div>
+                <div class="itemHome">
+                    <img class="itemHomeImg" src="{% static 'app/api.svg' %}"/>
+                    <h2>Fast Api Connection With Social Media</h2>
+                </div>
+                <div class="itemHome">
+                    <img class="itemHomeImg" src="{% static 'app/report.svg' %}"/>
+                    <h2>Advanced Reporting</h2>
+                </div>
+            </section>
+{% endblock %}

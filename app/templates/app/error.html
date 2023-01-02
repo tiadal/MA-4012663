@@ -1,0 +1,13 @@
+{% extends "app/header.html" %}
+{% load static %}
+{% block content %}
+            <section class="hero pad">
+                <div class="boxCenter">
+                    <h1>This url does not exist.</h1>
+                    <div>
+                        <img src="{% static 'app/404.svg' %}" height="160" width="160" alt="404 error"/>
+                    </div>
+                    <a href="{% url 'app:homepage' %}">Go back home</a>
+                </div>
+            </section>
+{% endblock %}

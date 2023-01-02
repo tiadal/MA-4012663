@@ -1,0 +1,79 @@
+{% extends "app/header.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block head %}
+<style>
+
+</style>
+{% endblock %}
+{% block content %}
+            <section class="gridWrapper padGridWrapper">
+                <div class="boxLeft pad">
+                    <div class="boxHeader">
+                        <h1>Add Survey</h1>
+                    </div>
+                    <div id="formAdd"class="boxForm">
+                        <h1>Enter the Survey name:</h1>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form }}
+                            <button type="submit" name="formAdd">ADD</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="boxRight pad">
+                    <div class="boxHeader">
+                        <h1>List</h1>
+                    </div>
+                    <div class="cardContainer" style="overflow-x:auto;">
+                            <table id="creators-table" data-name="product-table">
+                                <thead>
+                                    <tr id="tableHeader">
+                                        <th scope="col">Action!</th>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Language</th>
+                                        <th scope="col">First:</th>
+                                        <th scope="col">Zero:</th>
+                                        <th scope="col">Last:</th>
+                                        <th scope="col">Redirect To</th>
+                                        <th scope="col">Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for survey in surveys %}
+                                        {% if survey.survey_zero %}
+                                        <tr class="tbc study-zero">
+                                        {% elif survey.first_survey %}
+                                        <tr class="tbc study-first">
+                                        {% elif survey.last_survey %}
+                                        <tr class="tbc study-last">
+                                        {% else %}
+                                        <tr class="tbc">
+                                        {% endif %}
+                                            <td class="button-table"><a href="{% url 'app:test-settings' testid=survey.id %}">Details</a></td>
+                                            <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{survey.id}}</td>
+                                            <td><img src="{% static 'app/type.png' %}" class="imgCell" height="24" width="24">{{survey.language}}</td>
+                                            <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{survey.first_survey}}</td>
+                                            <td><img src="{% static 'app/type.png' %}" class="imgCell" height="24" width="24">{{survey.survey_zero}}</td>
+                                            <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{survey.last_survey}}</td>
+                                            <td><img src="{% static 'app/type.png' %}" class="imgCell" height="24" width="24">{{survey.redirect_to}}</td>
+                                            <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{survey.name}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+            </section>
+            {% if messages %}
+            <div id="errorBar" class="error_message">
+                {% for message in messages %}
+                <span>{{ message }}</span> 
+                {% endfor %}
+                <button class="error_button" onclick="errorBar()"> X </button>
+            </div>
+            {% endif %}
+{% endblock %}
+
+{% block jsfile %}
+{% endblock %}

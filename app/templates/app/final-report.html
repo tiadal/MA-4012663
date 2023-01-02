@@ -1,0 +1,179 @@
+{% extends "app/header.html" %}
+{% load static %}
+{% block content %}
+<section class="sectionResults">
+    <div class="boxCenter pad">
+        <h1>Survey results
+            <a href="#" onclick="download_table_as_csv('creators-table');">Download as CSV</a>
+        </h1>
+        <div class="cardContainer" style="overflow-x:auto;">
+            <table id="creators-table" data-name="product-table" style="table-layout: auto; width: 100%;">
+                {% if template == 1 %} <!-- users -->
+                <thead>
+                    <tr id="tableHeader">
+                        <th scope="col">ID</th>
+                        <th scope="col">user_id</th>
+                        <th scope="col">lang</th>
+                        <th scope="col">gender</th>
+                        <th scope="col">age_range</th>
+                        <th scope="col">occupation</th>
+                        <th scope="col">academic</th>
+                        <th scope="col">privacy</th>
+                        <th scope="col">click_ads</th>
+                        <th scope="col">context</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in survey_data %}
+                        <tr class="tbc">
+                            <td>{{data.id}}</td>
+                            <td>{{data.user_id}}</td>
+                            <td>{{data.lang}}</td>
+                            <td>{{data.gender}}</td>
+                            <td>{{data.age_range}}</td>
+                            <td>{{data.occupation}}</td>
+                            <td>{{data.academic}}</td>
+                            <td>{{data.privacy}}</td>
+                            <td>{{data.click_ads}}</td>
+                            <td>{{data.context}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                {% elif template == 2 %} <!-- sens -->
+                <thead>
+                    <tr id="tableHeader">
+                        <th scope="col">ID</th>
+                        <th scope="col">user_id</th>
+                        <th scope="col">case_id</th>
+                        <th scope="col">variable_tested</th>
+                        <th scope="col">template_id</th>
+                        <th scope="col">lang</th>
+                        <th scope="col">gender</th>
+                        <th scope="col">dep_var</th>
+                        <th scope="col">answer_1</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in survey_data %}
+                        <tr class="tbc">
+                            <td>{{data.id}}</td>
+                            <td>{{data.user_id}}</td>
+                            <td>{{data.case_id}}</td>
+                            <td>{{data.variable_tested}}</td>
+                            <td>{{data.template_id}}</td>
+                            <td>{{data.lang}}</td>
+                            <td>{{data.gender}}</td>
+                            <td>{{data.dep_var}}</td>
+                            <td>{{data.answer_1}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                {% elif template == 3 %} <!-- context -->
+                <thead>
+                    <tr id="tableHeader">
+                        <th scope="col">ID</th>
+                        <th scope="col">user_id</th>
+                        <th scope="col">case_id</th>
+                        <th scope="col">variable_tested</th>
+                        <th scope="col">template_id</th>
+                        <th scope="col">lang</th>
+                        <th scope="col">gender</th>
+                        <th scope="col">dep_var</th>
+                        <th scope="col">answer_1</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in survey_data %}
+                        <tr class="tbc">
+                            <td>{{data.id}}</td>
+                            <td>{{data.user_id}}</td>
+                            <td>{{data.case_id}}</td>
+                            <td>{{data.variable_tested}}</td>
+                            <td>{{data.template_id}}</td>
+                            <td>{{data.lang}}</td>
+                            <td>{{data.gender}}</td>
+                            <td>{{data.dep_var}}</td>
+                            <td>{{data.answer_1}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                {% elif template == 4 %} <!-- final -->
+                <thead>
+                    <tr id="tableHeader">
+                        <th scope="col">ID</th>
+                        <th scope="col">user_id</th>
+                        <th scope="col">case_id</th>
+                        <th scope="col">sensitivity</th>
+                        <th scope="col">context</th>
+                        <th scope="col">transparency</th>
+                        <th scope="col">contextual_matching</th>
+                        <th scope="col">template_sensitivity</th>
+                        <th scope="col">template_context</th>
+                        <th scope="col">template_transparency</th>
+                        <th scope="col">template_contextual_matching</th>
+                        <th scope="col">answer_1</th>
+                        <th scope="col">answer_2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in survey_data %}
+                        <tr class="tbc">
+                            <td>{{data.id}}</td>
+                            <td>{{data.user_id}}</td>
+                            <td>{{data.case_id}}</td>
+                            
+                            <td>{{data.sensitivity}}</td>
+                            <td>{{data.context}}</td>
+                            <td>{{data.transparency}}</td>
+                            <td>{{data.contextual_matching}}</td>
+                            <td>{{data.template_sensitivity}}</td>
+                            <td>{{data.template_context}}</td>
+                            <td>{{data.template_transparency}}</td>
+                            <td>{{data.template_contextual_matching}}</td>
+                            <td>{{data.answer_1}}</td>
+                            <td>{{data.answer_2}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                {% else %}
+                <h2> no data! </h2>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block jsfile %}
+<script>
+// Quick and simple export target #table_id into a csv
+function download_table_as_csv(table_id, separator = ',') {
+    // Select rows from table_id
+    var rows = document.querySelectorAll('table#' + table_id + ' tr');
+    // Construct csv
+    var csv = [];
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll('td, th');
+        for (var j = 0; j < cols.length; j++) {
+            // Clean innertext to remove multiple spaces and jumpline (break csv)
+            var data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ')
+            // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
+            data = data.replace(/"/g, '""');
+            // Push escaped string
+            row.push('"' + data + '"');
+        }
+        csv.push(row.join(separator));
+    }
+    var csv_string = csv.join('\n');
+    // Download it
+    var filename = 'export_' + table_id + '_' + new Date().toLocaleDateString() + '.csv';
+    var link = document.createElement('a');
+    link.style.display = 'none';
+    link.setAttribute('target', '_blank');
+    link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+</script>
+{% endblock %}

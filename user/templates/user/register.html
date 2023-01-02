@@ -1,0 +1,16 @@
+{% extends "app/header.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+            <section class="hero pad">
+                <div class="boxCenter">
+                    <form method="post">
+                        {% csrf_token %}
+                            <legend>
+                                <h1>Enter your credentials:</h1>
+                            </legend>
+                             {{ form|crispy }}
+                        <button type="submit">Sign up</button>
+                    </form>
+                </div>
+            </section>
+{% endblock %}

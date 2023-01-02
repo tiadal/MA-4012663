@@ -1,0 +1,39 @@
+{% extends "app/header.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block head %}
+<style>
+
+</style>
+{% endblock %}
+{% block content %}
+            <section class="hero pad">
+                <div class="boxCenter">
+                        {% if redirect.last_survey %}
+                        <h1>{{ redirect.survey_end_text }}</h1>
+                        <img src="{% static 'app/thank-you.png' %}" height="64" width="64" alt="end survey"/>
+                        {% else %}
+                        <h2>{{ redirect.survey_end_text }}: <a href="{% url 'app:test-start' testid=redirect.redirect_to userid=redirect.userid %}" id="red-link">next</a></h2>
+                        <div style="display:none">
+                            <form action="{% url 'app:test-start' testid=redirect.redirect_to userid=redirect.userid %}" method="post" id="redirect">
+                                {% csrf_token %}
+                                <button type="submit" name="redirect"></button>
+                            </form>
+                        </div>
+                        {% endif %}
+<!-- # CODE 4 -->
+                </div>
+            </section>
+{% endblock %}
+
+{% block jsfile %}
+<script>
+    link = document.getElementById('red-link');
+    if (link != null) {
+        setTimeout(function(){
+            //document.getElementById("redirect").submit();
+            window.location.href = link;
+         }, 500);
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends "app/header.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block head %}
+{% autoescape off %}
+{% for code in code_css %}
+<style>
+    {{code }}
+</style>
+{% endfor %}
+{% endautoescape %}
+
+<style>
+
+</style>
+{% endblock %}
+{% block content %}
+<section class="gridWrapper padGridWrapper">
+    <div class="boxLeftSurvey pad">
+      <div class="boxHeader">
+        <h1>{{ info.caseid }} / {{survey_lenght}}</h1>
+      </div>
+      <div class="container">
+        <div class="fake-browser">
+          <div class="fake-browser-header">
+            <div class="action-btns">
+              <span></span>
+              <span></span> 
+              <span></span>
+            </div>
+            <div class="address-bar" id="domain">
+              
+            </div>
+            <div class="setting-more">
+            </div>
+          </div>
+          <section class="fake-window-body">
+            {% autoescape off %}
+            {% for code in code_html %}
+            {{ code }}
+            {% endfor %}
+            {% endautoescape %}
+            </section>
+        </div>
+      </div>
+    </div>
+    <div class="boxRightSurvey pad">
+      <div class="boxHeader">
+        <h1>{{title_question}}</h1>
+    </div>
+    {% if text_external %}
+    <div class="boxInfoHome surveyCase">
+        {{ text_external }}
+    </div>
+    {% endif %}
+    <div class="formContainer" id="formDiv">
+      <div class="boxForm sticky">
+
+          <form method="post" action="{% url 'app:test-case' testid=info.testid userid=info.userid caseid=info.nextid %}">
+              {% csrf_token %}
+              {{ form }}
+              <hr>
+              <button id="formAnswer" type="submit" name="formAnswer">{{ text_button }}</button>
+          </form>
+      </div>
+    </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block jsfile %}
+<script>
+    {% autoescape off %}
+    {% for code in code_js %}
+    {{ code }}
+    {% endfor %}
+    {% endautoescape %}
+</script>
+<script>
+var yes = document.getElementById("yes")
+var no = document.getElementById("no")
+
+function closeCookie() {
+  var cookiesfullscreen = document.getElementById("stufffullscreen");
+  cookiesfullscreen.style.display = "none";
+}
+</script>
+{% endblock %}

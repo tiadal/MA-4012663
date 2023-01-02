@@ -1,0 +1,34 @@
+{% extends "app/header.html" %}
+{% load static %}
+{% block content %}
+            <section class="hero pad">
+                <div class="boxCenter surveyBox">
+                    <h1 class="surveyTitle">Copy of Survey for Master's Thesis. (This is a TEST ONLY THE ENGLISH - M is working)</h1>
+                    <h2 class="surveySubtitle"><img src="{% static 'app/logobtu.png' %}" height="20" width="120" alt="german survey"/></h2>
+                    <div class="surveyChoice">
+                        <a class="surveyText" href="http://127.0.0.1:8000/survey/8/start/0">
+                            <img src="{% static 'app/germany.png' %}" height="64" width="64" alt="german survey"/>
+                            Fragebogen starten
+                        </a>
+                    </div>
+                    <div class="surveyChoice">
+                        <a class="surveyText" href="http://127.0.0.1:8000/survey/8/start/0">
+                            <img src="{% static 'app/italy.png' %}" height="64" width="64" alt="italian survey"/>
+                            Inizia il questionario
+                        </a>
+                    </div>
+                    <div class="surveyChoice">
+                        <a class="surveyText" href="http://127.0.0.1:8000/survey/8/start/0">
+                            <img src="{% static 'app/english.png' %}" height="64" width="64" alt="english survey"/>
+                            Start the survey
+                        </a>
+                    </div>
+                </div>
+                <!--
+                <div class="boxLeftHome">
+                    <h1 class="outline title">Survey</h1>
+                    <h2 class="outline subtitle">App</h2>
+                </div>
+                -->
+            </section>
+{% endblock %}

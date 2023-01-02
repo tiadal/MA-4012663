@@ -1,0 +1,294 @@
+{% extends "app/header.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block head %}
+<style>
+input {
+    color: black!important;
+    font-weight: 500!important;
+}
+.relative {
+    position: relative;
+    z-index: 7;
+    margin-bottom: 2rem;
+}
+.link {
+    color: orange !important;
+    text-decoration: none!important;
+}
+.link:hover {
+    color: red !important;
+}
+.link:visited {
+    color: orange !important;
+}
+.variableWrapper {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+}
+.variableItem {
+    width: 12rem;
+    border-radius: 8px;
+    background-color: lightgray;
+    margin: 0.5rem 1rem 0.5rem 0.5rem;
+    border: 1px solid grey;
+    text-align: center!important;
+}
+.variableLabel {
+    width:100%;
+    color: black;
+    min-height: 2.5rem;
+    top: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    display: block;
+    position: relative;
+    word-wrap: normal;
+}
+.variableValue {
+    width:6rem;
+    color: black!important;
+    position: relative;
+    left: 3rem;
+    font-size: 3rem;
+}
+.variableSubmit {
+    margin: 0.5rem 0 0.5rem 0;
+}
+.sectionResults {
+    background-color: grey;
+    padding: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.boxMiddle {
+    width: 33%
+}
+
+#id_forms {
+    width: 100%;
+}
+
+#id_forms > div {
+    background-color: lightgray;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0.5rem;
+    margin: 0.5rem 0 0 0;
+}
+
+#id_forms > div > label{
+    width: 4rem;
+    display: flex;
+    position: relative;
+    margin: 0 1rem 0 0;
+}
+
+#id_forms > div > label > input{
+    margin: 0 1rem 0 0;  
+}
+.boxHeader > .boxInfoHome {
+background-color: black;
+}
+
+</style>
+{% endblock %}
+{% block content %}
+            <section class="gridWrapper padGridWrapper">
+                <div class="boxLeft pad" >
+                    <div class="boxHeader ">
+                        <h1>Survey</h1>
+                        <span type="button" id="delete" class="collapsible"><a href="{% url 'app:test-delete' testid=survey_info.id %}" onclick="return confirm('Are you sure you want to delete this item?');"><img src="{% static 'app/close.svg' %}" height="24" width="24"></a></span>
+                        {% if survey_info.name %}
+                        <br>
+                        <div class="boxInfoHome">
+                        {{ survey_info.name }}
+                        </div>
+                        {% endif %}
+                        {% if survey_info.language == 'EN' %}
+                            <div class="boxInfoHome">
+                            {{ survey_info.language }}
+                            </div>
+                        {% elif survey_info.language == 'DE' %}
+                            <div class="boxInfoHome">
+                                {{ survey_info.language }}
+                            </div>                  
+                        {% elif survey_info.language == 'ES' %}
+                            <div class="boxInfoHome">
+                                {{ survey_info.language }}
+                            </div>                  
+                        {% elif survey_info.language == 'IT' %}
+                            <div class="boxInfoHome">
+                                {{ survey_info.language }}
+                            </div>                  
+                        {% endif %}
+                        {% if survey_info.description %}
+                        <div class="boxInfoHome">
+                        {{ survey_info.description }}
+                        </div>
+                        {% endif %}
+                        {% if settings_info %}
+                            <div class="boxInfoHome">
+                            {{ settings_info.variables}}
+                            </div>
+                            <div class="boxInfoHome">
+                            Lenght: {{ settings_info.lenght }}
+                            </div>
+                        {% endif %}
+                        <div class="boxInfoHome">
+                            first_survey: {{ survey_info.first_survey  }}
+                        </div>
+                        <div class="boxInfoHome">
+                            survey_zero: {{ survey_info.survey_zero  }}
+                        </div>
+                        <div class="boxInfoHome">
+                            redirect_to: {{ survey_info.redirect_to  }}
+                        </div>
+                        <div class="boxInfoHome">
+                            last_survey: {{ survey_info.last_survey  }}
+                        </div>
+                        <div class="boxInfoHome">
+                            <a class="link" target="_blank" href="{% url 'app:test-start' testid=survey_info.id userid=0 %}">Share!</a>
+                        </div>
+                        <div class="boxInfoHome">
+                            <a class="link" target="_blank" href="{% url 'app:test-results' testid=survey_info.id  %}">Download data</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="boxRight pad">
+                    <div class="boxHeader">
+                        <h1>Settings</h1>
+                    </div>
+                    <div class="boxHeader relative">
+                        <h1>Internal Text</h1>
+                        <div class="boxForm">
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ formEditInternalText }}
+                                <button type="submit" name="formEditInternalText">SAVE</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="boxHeader relative">
+                        <h1>Main Settings</h1>
+                        <div class="boxForm">
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ formEditSettings }}
+                                <button type="submit" name="formEditSettings">SAVE</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="boxHeader relative">
+                        <h1>External Text</h1>
+                        <div class="boxForm">
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ formEditExternalText }}
+                                <button type="submit" name="formEditExternalText">SAVE</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="boxHeader relative">
+                        <h1>Variables & Segments</h1>
+                        <div class="">
+                            <form id="formEditVariables" method="post" novalidate>
+                                {% csrf_token %}
+                                <div class="variableWrapper">
+                                    {% for variable in variables %}
+                                    <div class="variableItem">
+                                        <input class="variableValue" type="number" name="{{ variable.tag }}" id="{{ variable.tag }}" min="0" max="{{ variable.max_segments }}">
+                                        <label for="{{ variable.tag }}" class="variableLabel">{{ variable.name }}</label>
+                                    </div>
+                                    {% endfor %}
+                                    <div class="variableItem">
+                                        <input class="variableSubmit" type="submit" name="formEditVariablesSubmit">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>                    
+                    <div class="boxHeader relative">
+                        <h1>Start Form</h1>
+                        <div class="boxForm">
+                            <form id="formStart" method="post" novalidate>
+                                {% csrf_token %}
+                                {{ formStart }}
+                                <button type="submit" name="formStart">SAVE START FORM</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% if survey_info.first_survey %}
+                    {% else %}
+                    <div class="boxHeader relative">
+                        <h1>Forms</h1>
+                        <div class="boxForm">
+                            <form id="formEditForms" method="post" novalidate>
+                                {% csrf_token %}
+                                {{ formEditForms }}
+                                <button type="submit" name="formEditForms">SAVE FORM</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </section>
+            <section class="sectionResults">
+                <div class="boxCenter pad">
+                    <h1></h1>
+                    <div class="cardContainer" style="overflow-x:auto;">
+                        <table id="creators-table" data-name="product-table">
+                            {% if survey_info.first_survey %}
+                            <thead>
+                                <tr id="tableHeader">
+                                    <th scope="col">User ID</th>
+                                    <th scope="col">Settings</th>
+                                    <th scope="col">Choice</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for case in survey_cases %}
+                                    <tr class="tbc">
+                                        <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{case.id}}</td>
+                                        <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{case.user_settings}}</td>
+                                        <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{case.user_choiche}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            {% else %}
+                            <thead>
+                                <tr id="tableHeader">
+                                    <th scope="col">User ID</th>
+                                    <th scope="col">Answers</th>
+                                    <th scope="col">Settings</th>
+                                    <!-- <th scope="col">N° Answers</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for case in survey_cases %}
+                                    <tr class="tbc">
+                                        <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{case.survey_user_id}}</td>
+                                        <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{case.case_settings}}</td>
+                                        <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{case.case_answers}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+            </section>
+            {% if messages %}
+            <div id="errorBar" class="error_message">
+                {% for message in messages %}
+                <span>{{ message }}</span> 
+                {% endfor %}
+                <button class="error_button" onclick="errorBar()"> X </button>
+            </div>
+            {% endif %}
+{% endblock %}
+
+{% block jsfile %}
+{% endblock %}

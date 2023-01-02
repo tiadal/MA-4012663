@@ -1,0 +1,58 @@
+{% extends "app/header.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block head %}
+<style>
+.settings-category {
+    position: relative;
+    z-index: 8;
+    margin-bottom: 2rem;
+    top: 8rem;
+}
+.list-item-settings {
+    color: black;
+    margin: 0.5rem 0 0.5rem 0;
+}
+
+.padGridWrapper {
+    padding: 0 2rem 2rem 2rem;
+    margin: 0 0 4rem 0;
+}
+</style>
+{% endblock %}
+{% block content %}
+            <section class="gridWrapper padGridWrapper">
+                <div class="boxLeft pad">
+                    <div class="boxHeader">
+                        <h1>Form Settings</h1>
+                        <span type="button" id="delete" class="collapsible"><a href="{% url 'app:test-formdelete' formid=formid %}" onclick="return confirm('Are you sure you want to delete this form?');"><img src="{% static 'app/close.svg' %}" height="24" width="24"></a></span>
+                    </div>
+                </div>
+                <div class="boxRight pad">
+                    <div class="boxHeader">
+                        <h1>Settings</h1>
+                    </div>
+                    <!-- section setting -->
+                    <div class="boxHeader">
+                        <div class="boxForm">
+                            <form id="formEdit" method="post">
+                                {% csrf_token %}
+                                {{ formEdit }}
+                                <button type="submit" name="formEdit">EDIT FORM</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {% if messages %}
+            <div id="errorBar" class="error_message">
+                {% for message in messages %}
+                <span>{{ message }}</span> 
+                {% endfor %}
+                <button class="error_button" onclick="errorBar()"> X </button>
+            </div>
+            {% endif %}
+{% endblock %}
+
+{% block jsfile %}
+{% endblock %}

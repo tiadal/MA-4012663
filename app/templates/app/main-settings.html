@@ -1,0 +1,192 @@
+{% extends "app/header.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block head %}
+<style>
+
+</style>
+{% endblock %}
+{% block content %}
+            <section class="gridWrapper padGridWrapper">
+                <div class="boxLeft pad">
+                    <div class="boxHeader">
+                        <h1>Main Settings</h1>
+                        <ul>
+                            <li class="list-item-settings"><a href="#varAndSeg">Variables</a></li>
+                            <li class="list-item-settings"><a href="#varTemplate">Templates</a></li>
+                            <li class="list-item-settings"><a href="#varForm">Form</a></li>
+                            <li class="list-item-settings"><a href="#counters">Counters</a></li>
+                            <li class="list-item-settings"><a href="#reports">Reports</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="boxRight pad">
+                    <div class="boxHeader">
+                        <h1>Settings</h1>
+                    </div>
+
+                    <!-- section delete -->
+                    <div id="varAndSeg" class="boxHeader settings-category">
+                        <h1>Delete</h1>
+                        <div class="boxForm">
+                            <form id="deleteStuff" method="post">
+                                {% csrf_token %}
+                                <button type="submit" name="deleteStuff">DELETE ALL</button>
+                            </form>
+                        </div>
+                    </div>
+
+
+                    <!-- section setting -->
+                    <div id="varAndSeg" class="boxHeader settings-category">
+                        <h1>Variables & Segments</h1>
+                        <div class="boxForm">
+                            <form id="formNewVariablesCategory" method="post">
+                                {% csrf_token %}
+                                {{ formNewVariablesCategory }}
+                                <button type="submit" name="addNewVariablesCategory">ADD VARIABLE</button>
+                            </form>
+                        </div>
+                        <div class="cardContainer" style="overflow-x:auto;">
+                            <table id="creators-table" data-name="product-table">
+                                <tr id="tableHeader">
+                                    <th scope="col">Action!</th>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Tag</th>
+                                    <th scope="col">Max Seg</th>
+                                    <th scope="col">Name</th>
+                                </tr>
+                                {% for vc in variables_category %}
+                                <tr class="tbc">
+                                    <td class="button-table"><a href="{% url 'app:test-settingsvariabledelete' variableid=vc.id %}">DELETE</a></td>
+                                    <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{vc.id}}</td>
+                                    <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{vc.tag}}</td>
+                                    <td><img src="{% static 'app/type.png' %}" class="imgCell" height="24" width="24">{{vc.max_segments}}</td>
+                                    <td><img src="{% static 'app/type.png' %}" class="imgCell" height="24" width="24">{{vc.name}}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                    </div>
+                    </div>
+                    <!-- section setting -->
+                    <div id="varTemplate" class="boxHeader settings-category">
+                        <h1>Templates</h1>
+                        <div class="boxForm">
+                            <form id="formNewVariableTemplates" method="post">
+                                {% csrf_token %}
+                                {{ formNewVariableTemplates }}
+                                <button type="submit" name="addNewVariableTemplate">ADD TEMPLATE</button>
+                            </form>
+                        </div>
+                        <div class="cardContainer" style="overflow-x:auto;">
+                            <table id="creators-table" data-name="product-table">
+                                <tr id="tableHeader">
+                                    <th scope="col">Action!</th>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Var ID</th>
+                                    <th scope="col">0 Template</th>
+                                    <th scope="col">Name</th>
+                                </tr>
+                                {% for template in templates %}
+                                <tr class="tbc">
+                                    <td class="button-table"><a href="{% url 'app:test-templateedit' templateid=template.id %}">EDIT</a></td>
+                                    <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{template.id}}</td>
+                                    <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{template.variable_id}}</td>
+                                    <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{template.zero_template}}</td>
+                                    <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{template.name}}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                    </div>
+                    </div>
+                    <!-- section setting -->
+                    <div id="varForm" class="boxHeader settings-category">
+                        <h1>Forms</h1>
+                        <div class="boxForm">
+                            <form id="formSurvey" method="post">
+                                {% csrf_token %}
+                                {{ formSurvey }}
+                                <button type="submit" name="formSurvey">ADD FORM</button>
+                            </form>
+                        </div>
+                        <div class="cardContainer" style="overflow-x:auto;">
+                            <table id="creators-table" data-name="product-table">
+                                <tr id="tableHeader">
+                                    <th scope="col">Action!</th>
+                                    <th scope="col">language</th>
+                                    <th scope="col">Is Start?</th>
+                                    <th scope="col">tag</th>
+                                    <th scope="col">name</th>
+                                </tr>
+                                {% for form in forms %}
+                                <tr class="tbc">
+                                    <td class="button-table"><a href="{% url 'app:test-formedit' formid=form.id %}">EDIT</a></td>
+                                    <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{form.language}}</td>
+                                    <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{form.is_start}}</td>
+                                    <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{form.template_tag}}</td>
+                                    <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{form.name}}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                    </div>
+                    </div>
+                    <!-- section setting -->
+                    <div id="counters" class="boxHeader settings-category">
+                        <h1>Counters</h1>
+                        <div class="boxForm">
+                            <form id="formCounterSurvey" method="post">
+                                {% csrf_token %}
+                                {{ formCounterSurvey }}
+                                <button type="submit" name="addFormCounter">ADD VARIABLE</button>
+                            </form>
+                        </div>
+                        <div class="cardContainer" style="overflow-x:auto;">
+                            <table id="creators-table" data-name="product-table">
+                                <tr id="tableHeader">
+                                    <th scope="col">id</th>
+                                    <th scope="col">unique_id</th>
+                                    <th scope="col">CO</th>
+                                    <th scope="col">TR</th>
+                                    <th scope="col">SE</th>
+                                    <th scope="col">CM</th>
+                                    <th scope="col">Counter</th>
+                                </tr>
+                                {% for counter in counters %}
+                                <tr class="tbc">
+                                    <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{counter.id}}</td>
+                                    <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{counter.unique_id}}</td>
+                                    <td><img src="{% static 'app/name.svg' %}" class="imgCell" height="24" width="24">{{counter.co}}</td>
+                                    <td><img src="{% static 'app/type.png' %}" class="imgCell" height="24" width="24">{{counter.tr}}</td>
+                                    <td><img src="{% static 'app/type.png' %}" class="imgCell" height="24" width="24">{{counter.se}}</td>
+                                    <td><img src="{% static 'app/type.png' %}" class="imgCell" height="24" width="24">{{counter.cm}}</td>
+                                    <td><img src="{% static 'app/type.png' %}" class="imgCell" height="24" width="24">{{counter.counter}}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                    </div>
+                    </div>
+                    <!-- section setting -->
+                    <div id="reports" class="boxHeader settings-category">
+                        <div class="boxHeader">
+                            <ul>
+                                <li class="list-item-settings"><a href="{% url 'app:test-final-results' reportid=1 %}">Users</a></li>
+                                <li class="list-item-settings"><a href="{% url 'app:test-final-results' reportid=2 %}">Sensitive</a></li>
+                                <li class="list-item-settings"><a href="{% url 'app:test-final-results' reportid=3 %}">Context</a></li>
+                                <li class="list-item-settings"><a href="{% url 'app:test-final-results' reportid=4 %}">Final Results</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {% if messages %}
+            <div id="errorBar" class="error_message">
+                {% for message in messages %}
+                <span>{{ message }}</span> 
+                {% endfor %}
+                <button class="error_button" onclick="errorBar()"> X </button>
+            </div>
+            {% endif %}
+{% endblock %}
+
+{% block jsfile %}
+{% endblock %}

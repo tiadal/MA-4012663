@@ -1,0 +1,83 @@
+{% extends "app/header.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block head %}
+<style>
+
+</style>
+{% endblock %}
+{% block content %}
+            <section class="gridWrapper gridHalf padGridWrapper">
+                <div class="boxLeft pad">
+                    {% if survey_info.external_title %}
+                    <div class="boxInfoHome">
+                    <h1 class="surveyStartH1">
+                        {{ survey_info.external_title }}
+                    </h1>
+                    </div><br>
+                    {% endif %}
+                    {% if survey_info.external_description %}
+                    <div class="boxInfoHome">
+                        <p class="surveyStartDescription">
+                            {{ survey_info.external_description }}
+                        </p>
+                    </div>
+                    {% endif %}
+                    {% if survey_info.external_faq %}
+                    <hr>
+                    <div class="boxInfoHome">
+                      <h2 class="surveyStartH1">Faq</h2>
+                      <p class="surveyStartDescription">
+                        {{ survey_info.external_faq }}
+                      </p>
+                    </div>
+                    {% endif %}
+                    {% if survey_info.external_privacy %}
+                    <hr>
+                    <button class="collapsible">Privacy&nbsp;<img style="height: 16px; width: 16px;" src="{% static 'app/arrow-down.png' %}"></button>
+                    <div class="content">
+                      {{ survey_info.external_privacy }}
+                    </div>
+                    {% endif %}
+                    {% if survey_info.first_survey %}
+                    {% else %}
+                    <form method="post">
+                      {% csrf_token %}
+                      <button id="formAdd" type="submit" name="formAdd">{{text_button}}</button>
+                    </form>
+                    {% endif %}
+                </div>
+                {% if survey_info.first_survey %}
+                <div class="boxRight pad">
+                    <div class="formContainer" id="formDiv">
+                        <div class="boxForm">
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ form }}
+                                <button id="formAdd" type="submit" name="formAdd">{{text_button}}</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </section>
+{% endblock %}
+
+{% block jsfile %}
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } 
+      });
+    }
+    </script>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "app/header.html" %}
+{% load static %}
+{% block head %}
+<style>
+</style>
+{% endblock %}
+{% block content %}
+            <section class="hero pad">
+                <div class="boxCenter surveyBox">
+                    <h1 class="surveyTitle">Questionnaire Master thesis</h1>
+                    <h2 class="surveySubtitle">Mattia Dallai M. of Sc. eBusiness, B-TU</h2>
+                    <div class="surveyChoice">
+                        <a class="surveyText" href="http://survey.dallai.de/survey/1/start/">
+                            <img src="{% static 'app/germany.png' %}" height="64" width="64" alt="german survey"/>
+                            Fragenbogen starten
+                        </a>
+                    </div>
+                    <div class="surveyChoice">
+                        <a class="surveyText" href="http://survey.dallai.de/survey/1/start/">
+                            <img src="{% static 'app/italy.png' %}" height="64" width="64" alt="italian survey"/>
+                            Inizia il questionario
+                        </a>
+                    </div>
+                    <div class="surveyChoice">
+                        <a class="surveyText" href="http://survey.dallai.de/survey/1/start/">
+                            <img src="{% static 'app/english.png' %}" height="64" width="64" alt="english survey"/>
+                            Start the questionnaire
+                        </a>
+                    </div>
+                </div>
+            </section>
+{% endblock %}

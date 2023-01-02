@@ -1,0 +1,101 @@
+{% extends "app/header.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<section class="gridWrapper padGridWrapper">
+    <div class="boxLeft pad">
+        <div class="boxHeader">
+            <h1>{{ context.name }}'info</h1>
+            <span type="button" id="edit" onclick="edit()" class="collapsible" onclick="edit()"><img src="{% static 'app/pen.svg' %}" height="20" width="20"></span>
+            <span type="button" id="delete" class="delete"><a href="{% url 'app-partner-delete' partnerid=context.id %}"
+                    onclick="return confirm('Are you sure you want to delete this item?');"><img
+                        src="{% static 'app/close.svg' %}" height="24" width="24"></a></span>
+        </div>
+        <div id="formEdit" class="boxForm none">
+            <h1>Edit Partner:</h1>
+            <form  method="post">
+                {% csrf_token %}
+                {{ form }}
+                <button type="submit">EDIT</button>
+            </form>
+        </div>
+        <div class="boxInfoHome">
+            {{ context.partner_type }}
+        </div>
+        {% if context.description %}
+        <div class="boxInfoHome">
+            {{ context.description }}
+        </div>
+        {% endif %}
+        {% if context.hubspot_company %}
+        <div class="boxInfoHome">
+            HubSpot: {{ context.hubspot_company }}
+        </div>
+        {% else %}
+        <div class="boxInfoHome">
+            Not linked to HubSpot
+        </div>
+        {% endif %}
+        {% if context.user_id %}
+        <div class="boxInfoHome">
+            Linked to: {{ context.user_id }}
+        </div>
+        {% else %}
+        <div class="boxInfoHome">
+            Not linked to user
+        </div>
+        {% endif %}
+    </div>
+    <div class="boxRight pad">
+        <div class="container">
+            <input type="text" value="" placeholder="Enter your search here..." id="searchBar" onkeyup="myFunction()">
+            <input type="checkbox" class="abibi" id="switch" /><label class="abibi" for="switch"
+                onclick="changeView()">Toggle</label>
+            <button class="buttonActivites" onclick="exportTableToCSV('list.csv')"><img src="{% static 'app/csv.svg' %}"
+                    height="24" width="24"></button>
+        </div>
+        <div class="cardContainer">
+            <div class="cardContainer" style="overflow-x:auto;">
+                <table data-name="product-table">
+                    <tr id="tableHeader">
+                        <th scope="col" class="none"></th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Channels</th>
+                        <th scope="col">Revenue</th>
+                        <th scope="col">Cost</th>
+                        <th scope="col">Shared</th>
+                    </tr>
+                    {% for campaign in partner_campaigns %}
+                    <tr class="tbc">
+                        {% if campaign.url_image %}
+                        <td class="imageTable none"><img src="{{campaign.product.url_image}}"></td>
+                        {% else %}
+                        <td class="imageTable none"><img src="{% static 'app/placeholder.png' %}"></td>
+                        {% endif %}
+                        <td><img src="{% static 'app/title.png' %}" class="imgCell" height="24" width="24">{{campaign.name}}</td>
+                        <td><img src="{% static 'app/channels.png' %}" class="imgCell" height="24" width="24">{{campaign.count_channels}}</td>
+                        <td><img src="{% static 'app/money.png' %}" class="imgCell" height="24" width="24">{{campaign.revenue}}</td>
+                        <td><img src="{% static 'app/money-brutto.png' %}" class="imgCell" height="24" width="24">{{campaign.cost}}</td>
+                        <td>
+                            {% if campaign.is_shared == true %}
+                            <img src="{% static 'app/shared.png' %}" class="imgCell" height="24" width="24">Shared
+                            {% else %}
+                            <img src="{% static 'app/notshared.png' %}" class="imgCell" height="24" width="24">Internal
+                            {% endif %}
+                        </td>
+                        <td class="button-table"><a href="{% url 'app-campaign-info' campaignid=campaign.id %}">Details</a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+</section>
+{% if messages %}
+<div id="errorBar" class="error_message">
+    {% for message in messages %}
+    <span>{{ message }}</span> 
+    {% endfor %}
+    <button class="error_button" onclick="errorBar()"> X </button>
+</div>
+{% endif %}
+{% endblock %}

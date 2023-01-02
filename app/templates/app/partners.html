@@ -1,0 +1,59 @@
+{% extends "app/header.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<section class="gridWrapper padGridWrapper">
+    <div class="boxLeft pad">
+        <div class="boxHeader">
+            <h1>Partners</h1>
+            <span type="button" id="add" onclick="add()" class="collapsible"><img src="{% static 'app/plus.svg' %}" height="24" width="24"></span>
+        </div>
+        <div id="formAdd" class="boxForm none">
+            <h1>Enter the details</h1>
+            <form method="post">
+                {% csrf_token %}
+                     {{ form }}
+                <button type="submit">CREATE</button>
+            </form>
+        </div>
+    </div>
+    <div class="boxRight pad">
+        <div class="container">
+            <input type="text" value="" placeholder="Enter your search here..." id="searchBar" onkeyup="myFunction()">
+            <input type="checkbox"  class="abibi" id="switch" /><label class="abibi" for="switch" onclick="changeView()">Toggle</label>
+            <button class="buttonActivites" onclick="exportTableToCSV('list.csv')"><img src="{% static 'app/csv.svg' %}" height="24" width="24"></button>
+        </div>
+        <div class="cardContainer" style="overflow-x:auto;">
+            <table data-name="product-table">
+                <tr id="tableHeader">
+                    <th scope="col" class="none"></th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Type</th>
+                </tr>
+            {% for partner in context %}
+            <tr class="tbc">
+                {% if partner.url_image %}
+                <td class="imageTable none"><img src="{{partner.url_image}}"></td>
+                {% else %}
+                <td class="imageTable none"><img src="{% static 'app/person-placeholder.png' %}"></td>
+                {% endif %}
+                <td>{{partner.name}}</td>
+                <td>{{partner.description}}</td>
+                <td>{{partner.partner_type}}</td>
+                <td class="button-table"><a href="{% url 'app-partner-info' partnerid=partner.id %}">Details</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+        </div>
+    </div>
+</section>
+{% if messages %}
+<div id="errorBar" class="error_message">
+    {% for message in messages %}
+    <span>{{ message }}</span> 
+    {% endfor %}
+    <button class="error_button" onclick="errorBar()"> X </button>
+</div>
+{% endif %}
+{% endblock %}
